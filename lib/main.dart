@@ -34,37 +34,86 @@ class DropdownBtn extends StatefulWidget {
 }
 
 class _DropdownBtnState extends State<DropdownBtn> {
-  String dropdownValue = '전체보기';
+  String dropdownValue = 'all boxes';
+  final Widget _redBox = Container(width: 50, height: 50, color: Colors.red);
+  final Widget _blueBox = Container(width: 50, height: 50, color: Colors.blue);
+  final Widget _purpleBox = Container(width: 50, height: 50, color: Colors.purple);
+  final Widget _tealBox = Container(width: 50, height: 50, color: Colors.teal);
+
+  List<Widget> _boxes = [];
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         children: <Widget>[
+          SizedBox(height: 30),
           Container(
-            width: 500,
-            height: 300,
-            color: Colors.blue,
-          ),
-          DropdownButton<String>(
-            value: dropdownValue,
-            // icon: const Icon(Icons.arrow_downward),
-            elevation: 12,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: SizedBox.shrink(),
-            onChanged: (String? newValue) {
-              setState(() {
+            width: 200,
+            height: 100,
+            decoration: BoxDecoration(border: Border.all(color: Colors.teal, width: 1)),
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              icon: const Icon(Icons.arrow_downward),
+              elevation: 1,
+              alignment: Alignment.bottomRight,
+              // style: const TextStyle(color: Colors.deepPurple),
+              underline: const SizedBox.shrink(),
+              onChanged: (String? newValue) {
+                print(newValue);
                 dropdownValue = newValue!;
-              });
-            },
-            items: <String>['전체보기', '알츠윈', '알츠윈 컨설턴트', '보건소 전화', '보건소 대면'].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+                setState(() {});
+              },
+
+              // selectedItemBuilder: (BuildContext) => [
+              //   Container(width: 10, height: 50, color: Colors.red),
+              //   Container(width: 10, height: 50, color: Colors.amber),
+              // ],
+              items: <String>['all boxes', 'red box', 'blue box', 'purple box', 'teal box'].map<DropdownMenuItem<String>>(
+                (String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                },
+              ).toList(),
+            ),
           ),
+          const SizedBox(height: 30),
+          _container(),
         ],
+      ),
+    );
+  }
+
+  Widget _container() {
+    if (dropdownValue == 'all boxes') {
+      _boxes.clear();
+      _boxes.add(_redBox);
+      _boxes.add(_blueBox);
+      _boxes.add(_purpleBox);
+      _boxes.add(_tealBox);
+    } else if (dropdownValue == 'red box') {
+      _boxes.clear();
+      _boxes.add(_redBox);
+    } else if (dropdownValue == 'blue box') {
+      _boxes.clear();
+      _boxes.add(_blueBox);
+    } else if (dropdownValue == 'purple box') {
+      _boxes.clear();
+      _boxes.add(_purpleBox);
+    } else if (dropdownValue == 'teal box') {
+      _boxes.clear();
+      _boxes.add(_tealBox);
+    }
+
+    return Container(
+      width: 500,
+      height: 500,
+      color: Colors.grey,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: _boxes,
       ),
     );
   }
